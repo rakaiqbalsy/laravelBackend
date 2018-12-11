@@ -1,0 +1,36 @@
+#-> Documentation https://docs.travis-ci.com/user
+
+sudo: required    #-> Ke Root tertinggi
+dist: trusty      #-> Support Operating System
+language: php     #-> Bahasa yang digunakan .. Lihat documentasi
+ 
+php:
+  - 7.1
+
+branches:
+  only:
+    - master    #-> Staging Server
+    - develop   #-> For Develop
+
+#-> Sebelum melakukan / mengeksekusi script
+#-> install kebutuhan os. ext: mod-php dll.
+#-> before_install: 
+  #-> - curl -LO https://storage.googleapis.com/kubernetes-release/release $(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  #-> - chmod +x ./kubectl
+  #-> - sudo mv ./kubectl /usr/local/bin/kubectl
+  #-> - kubectl
+
+#-> Pre eksekution
+#-> testing kebutuhan dll.
+
+#Disini build
+before_script:
+  - cp .env.travis .env
+  - composer install --no-interaction
+  - php artisan key:generate
+
+#-> main execution
+
+# Disini test
+script:
+  - ./vendor/bin/phpunit
